@@ -266,9 +266,9 @@ async function main() {
     );
     assert(true, 'WebRTC peer connection reaches the connected state');
 
-    const volume = alice.page
-      .locator('.participant', { hasText: 'Bob' })
-      .locator('input[type="range"]');
+    const bobRow = alice.page.locator('.participant', { hasText: 'Bob' });
+    await bobRow.locator('button.voice-user').click();
+    const volume = bobRow.locator('input[type="range"]');
     await volume.fill('40');
     const storedVolume = await alice.page.evaluate(() => window.__slopcall.debugVoice()[0]?.volume);
     assert(Math.abs(storedVolume - 0.4) < 0.01, `per-user volume applies (${storedVolume})`);
@@ -276,13 +276,13 @@ async function main() {
     await alice.page.evaluate(() => {
       window.__soundPlays = [];
     });
-    await alice.page.click('button:has-text("Mute microphone")');
+    await alice.page.click('button[aria-label="Mute microphone"]');
     const micMuted = await alice.page.evaluate(() => window.__slopcall.micMuted);
     assert(micMuted === true, 'mute control updates state');
     await waitForSound(alice.page, 'mic-mute');
     assert(true, 'mute sound plays');
 
-    await alice.page.click('button:has-text("Unmute microphone")');
+    await alice.page.click('button[aria-label="Unmute microphone"]');
     await waitForSound(alice.page, 'mic-unmute');
     assert(true, 'unmute sound plays');
 
@@ -404,6 +404,8 @@ async function main() {
       .last();
     const temporaryId = await temporaryMessage.getAttribute('data-message-id');
     const temporaryUrl = await temporaryMessage.locator('.image-attachment img').getAttribute('src');
+    // The server allows 5 actions per 2s burst; let the bucket refill after the uploads.
+    await alice.page.waitForTimeout(2000);
     await temporaryMessage.hover();
     await temporaryMessage.locator('[data-action="delete"]').click();
     await temporaryMessage.locator('[data-action="confirm-delete"]').click();
@@ -459,7 +461,7 @@ async function main() {
       element.value = '40';
       element.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    await alice.page.getByRole('button', { name: 'Save', exact: true }).click();
+    await alice.page.click('.modal button[type="submit"]');
     await alice.page.waitForFunction(() => window.__slopcall?.settingsOpen === false);
     const soundPrefs = await alice.page.evaluate(() => ({
       enabled: window.__slopcall.soundsEnabled,

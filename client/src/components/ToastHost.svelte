@@ -22,13 +22,13 @@
 </div>
 
 <style>
+  /* Bottom-right, so toasts never cover headers or the settings dialog title. */
   .toasts {
     position: fixed;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 16px;
+    bottom: 84px;
     z-index: 200;
-    width: min(420px, calc(100vw - 36px));
+    width: min(340px, calc(100vw - 32px));
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -40,8 +40,9 @@
     align-items: flex-start;
     gap: 10px;
     padding: 10px 10px 10px 0;
-    border-radius: 10px;
-    background: var(--top);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: var(--high);
     box-shadow: var(--shadow);
     pointer-events: auto;
   }
@@ -85,7 +86,7 @@
   }
 
   .dismiss:hover {
-    background: var(--high);
+    background: var(--top);
     color: var(--text);
   }
 </style>
