@@ -101,6 +101,7 @@ Environment variables (all optional):
 | `PORT` | `8787` | HTTP/WebSocket port |
 | `HOST` | `0.0.0.0` | Bind address |
 | `DATA_DIR` | `server/data` | Message and upload storage directory |
+| `STUN_URL` | Google STUN | Comma-separated STUN URLs; replaces the Google defaults |
 | `TURN_URL` | unset | Comma-separated TURN URLs for restrictive NATs |
 | `TURN_USERNAME` | unset | TURN credential |
 | `TURN_PASSWORD` | unset | TURN credential |
@@ -152,6 +153,11 @@ The server relays WebRTC offers/answers/ICE and provides Google STUN servers. Th
 enough for most home networks. If users on symmetric NAT cannot hear each other, install
 coturn with `apt` and set `TURN_URL` / `TURN_USERNAME` / `TURN_PASSWORD`. The server
 forwards those credentials to clients automatically.
+
+Google STUN is unreachable from some Russian networks (DNS lookup fails), which leaves
+clients without a public address. coturn also answers STUN, so set
+`STUN_URL=stun:31.77.9.218:3478` to use it instead. If UDP TURN allocations time out,
+keep the `?transport=tcp` variant in `TURN_URL` so relaying can fall back to TCP.
 
 Because voice is a full mesh, each participant sends audio directly to every other
 participant. That is why rooms are capped at 12 and the practical comfortable size is
