@@ -430,7 +430,7 @@
   {:else}
     <header class="chat-header">
       <div class="channel-title">
-        <Icon name="hash" size={22} />
+        <Icon name="hash" size={20} />
         <h1>{channel.name}</h1>
       </div>
       <div class="header-meta">
@@ -446,7 +446,6 @@
           onclick={() => app.leaveTextChannel()}
         >
           <Icon name="leave" size={18} />
-          <span>{app.t('chat.leave')}</span>
         </button>
       </div>
     </header>
@@ -477,7 +476,9 @@
             data-message-id={message.id}
           >
             {#if !grouped}
-              <Avatar name={message.nickname} src={app.avatarFor(message.userId)} size={36} />
+              <span class="message-avatar">
+                <Avatar name={message.nickname} src={app.avatarFor(message.userId)} size={40} />
+              </span>
             {/if}
             <div class="message-body">
               <div class="message-meta">
@@ -487,9 +488,6 @@
                 <time datetime={new Date(message.ts).toISOString()}>
                   {formatTime(message.ts, app.locale)}
                 </time>
-                {#if message.editedAt && !message.deletedAt}
-                  <span class="edited">{app.t('chat.edited')}</span>
-                {/if}
                 {#if !message.deletedAt}
                   <div class="message-tools">
                     <button
@@ -537,7 +535,8 @@
                 <div class="message-text deleted">{app.t('chat.deletedMessage')}</div>
               {:else}
                 <div class="message-text" class:emoji-only={emojiOnly}>
-                  <Markdown text={message.text} />
+                  <!-- Kept on one line: message-text is pre-wrap, so template whitespace would render. -->
+                  <Markdown text={message.text} />{#if message.editedAt}<span class="edited"> ({app.t('chat.edited')})</span>{/if}
                 </div>
               {/if}
               {#if message.attachment && !message.deletedAt}
@@ -663,13 +662,6 @@
       {/if}
     </div>
 
-    <div class="typing-line" aria-live="polite">
-      {#if typingLabel}
-        <span class="typing-dots" aria-hidden="true"></span>
-        <span>{typingLabel}</span>
-      {/if}
-    </div>
-
     <div class="composer-wrap" bind:this={composerWrap}>
       {#if emojiOpen && app.connection === 'online'}
         <div class="emoji-popover" id="emoji-picker">
@@ -731,18 +723,6 @@
           type="file"
           onchange={onFileChange}
         />
-        <button
-          type="button"
-          class="emoji-toggle"
-          title={app.t('chat.emoji')}
-          aria-label={app.t('chat.emoji')}
-          aria-expanded={emojiOpen}
-          aria-controls="emoji-picker"
-          disabled={app.connection !== 'online' || uploading}
-          onclick={toggleEmoji}
-        >
-          <Icon name="emoji" size={20} />
-        </button>
         <textarea
           bind:this={input}
           bind:value={draft}
@@ -756,8 +736,20 @@
           onkeydown={onComposerKeydown}
         ></textarea>
         <button
+          type="button"
+          class="emoji-toggle"
+          title={app.t('chat.emoji')}
+          aria-label={app.t('chat.emoji')}
+          aria-expanded={emojiOpen}
+          aria-controls="emoji-picker"
+          disabled={app.connection !== 'online' || uploading}
+          onclick={toggleEmoji}
+        >
+          <Icon name="emoji" size={20} />
+        </button>
+        <button
           type="submit"
-          class="primary send"
+          class="send"
           disabled={app.connection !== 'online' || uploading || (draft.trim().length === 0 && !pendingFile)}
           title={uploading ? app.t('chat.uploading') : editingId ? app.t('chat.edit') : app.t('chat.send')}
           aria-label={uploading ? app.t('chat.uploading') : editingId ? app.t('chat.edit') : app.t('chat.send')}
@@ -769,6 +761,13 @@
           {/if}
         </button>
       </form>
+    </div>
+
+    <div class="typing-line" aria-live="polite">
+      {#if typingLabel}
+        <span class="typing-dots" aria-hidden="true"></span>
+        <span>{typingLabel}</span>
+      {/if}
     </div>
   {/if}
 </section>
@@ -818,14 +817,13 @@
   }
 
   .chat-header {
-    height: 64px;
-    flex: 0 0 64px;
+    height: 48px;
+    flex: 0 0 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--divider);
+    padding: 0 8px 0 16px;
     box-shadow: var(--shadow-sm);
     z-index: 1;
   }
@@ -835,15 +833,15 @@
     align-items: center;
     gap: 8px;
     min-width: 0;
-    color: var(--text-dim);
+    color: var(--text-faint);
   }
 
   .channel-title h1 {
     margin: 0;
     color: var(--text);
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -852,7 +850,7 @@
   .header-meta {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
   }
 
   .online-count {
@@ -876,16 +874,13 @@
   }
 
   .leave {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 12px;
-    border-radius: 9px;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
     background: transparent;
     color: var(--text-dim);
-    font-size: 14px;
-    font-weight: 600;
   }
 
   .leave:hover {
@@ -910,10 +905,9 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 20px 24px 24px;
+    padding: 8px 0 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
   }
 
   .state-line {
@@ -938,19 +932,29 @@
     font-size: 16px;
   }
 
+  /* Discord-style rows: avatar in a 72px gutter, follow-ups show their time on hover. */
   .message {
+    position: relative;
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    max-width: 900px;
+    margin-top: 16px;
+    padding: 2px 48px 2px 72px;
   }
 
   .message.grouped {
-    margin-top: -8px;
+    margin-top: 0;
   }
 
-  .message.grouped .message-body {
-    margin-left: 48px;
+  .message:hover,
+  .message:has(.message-action[aria-expanded='true']) {
+    background: color-mix(in srgb, var(--elevated) 55%, transparent);
+  }
+
+  .message-avatar {
+    position: absolute;
+    top: 4px;
+    left: 16px;
+    display: flex;
   }
 
   .message-body {
@@ -962,13 +966,17 @@
     display: flex;
     align-items: baseline;
     gap: 8px;
-    margin-bottom: 2px;
+  }
+
+  .message.grouped .message-meta {
+    display: contents;
   }
 
   .message-author {
     color: var(--text);
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.375;
   }
 
   .message.own .message-author {
@@ -977,38 +985,61 @@
 
   .message-meta time {
     color: var(--text-faint);
+    font-size: 12px;
+  }
+
+  .message.grouped time {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 64px;
     font-size: 11px;
+    line-height: 1.6;
+    text-align: right;
+    opacity: 0;
+  }
+
+  .message.grouped:hover time {
+    opacity: 1;
   }
 
   .edited {
     color: var(--text-faint);
     font-size: 11px;
-    font-style: italic;
+    white-space: nowrap;
   }
 
   .message-tools {
+    position: absolute;
+    top: -16px;
+    right: 16px;
+    z-index: 2;
     display: flex;
     align-items: center;
     gap: 2px;
-    margin-left: auto;
+    padding: 2px;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: var(--elevated);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+
+  .message:hover .message-tools,
+  .message-tools:focus-within,
+  .message-tools:has([aria-expanded='true']) {
+    opacity: 1;
   }
 
   .message-action {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     display: grid;
     place-items: center;
     border-radius: 6px;
     background: transparent;
-    color: var(--text-faint);
-    opacity: 0;
-    transition: opacity 120ms ease, background 120ms ease, color 120ms ease;
-  }
-
-  .message:hover .message-action,
-  .message-action:focus-visible,
-  .message-action[aria-expanded='true'] {
-    opacity: 1;
+    color: var(--text-dim);
   }
 
   .message-action:hover {
@@ -1018,12 +1049,11 @@
 
   .message-action.danger:hover,
   .message-action.active {
-    opacity: 1;
     color: var(--red);
   }
 
   @media (hover: none) {
-    .message-action {
+    .message-tools {
       opacity: 0.7;
     }
   }
@@ -1100,8 +1130,8 @@
 
   .message-text {
     color: var(--text);
-    font-size: 17px;
-    line-height: 1.45;
+    font-size: 16px;
+    line-height: 1.375;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     font-family: var(--font-sans), 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
@@ -1262,7 +1292,7 @@
     align-items: center;
     gap: 7px;
     min-height: 24px;
-    padding: 0 24px;
+    padding: 0 16px;
     color: var(--text-faint);
     font-size: 13px;
   }
@@ -1297,7 +1327,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 20px 6px;
+    margin: 0 16px 6px;
     padding: 7px 8px 7px 10px;
     border: 1px solid var(--divider);
     border-radius: 10px;
@@ -1362,33 +1392,36 @@
   .emoji-popover {
     position: absolute;
     bottom: calc(100% + 8px);
-    left: 20px;
+    right: 16px;
     z-index: 20;
   }
 
+  /* One rounded bar with the buttons inside, like Discord's message box. */
   .composer {
     flex: 0 0 auto;
     display: flex;
     align-items: flex-end;
-    gap: 10px;
-    padding: 12px 20px 16px;
-    border-top: 1px solid var(--divider);
-    background: var(--base);
+    gap: 2px;
+    margin: 0 16px;
+    padding: 0 6px;
+    border-radius: 8px;
+    background: var(--high);
   }
 
-  .emoji-toggle {
-    width: 44px;
-    height: 52px;
+  .emoji-toggle,
+  .send {
+    width: 36px;
+    height: 44px;
     display: grid;
     place-items: center;
     flex: 0 0 auto;
-    border-radius: 10px;
+    padding: 0;
+    border-radius: 6px;
     background: transparent;
-    color: var(--text-dim);
+    color: var(--text-faint);
   }
 
   .emoji-toggle:hover:not(:disabled) {
-    background: var(--high);
     color: var(--text);
   }
 
@@ -1399,16 +1432,16 @@
   .composer textarea {
     flex: 1;
     min-width: 0;
-    min-height: 52px;
+    min-height: 44px;
     max-height: 180px;
-    padding: 12px 14px;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    background: var(--high);
+    padding: 11px 6px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     color: var(--text);
     font: inherit;
-    font-size: 17px;
-    line-height: 1.45;
+    font-size: 16px;
+    line-height: 1.375;
     resize: none;
     overflow-y: auto;
   }
@@ -1419,21 +1452,15 @@
 
   .composer textarea:focus,
   .composer textarea:focus-visible {
-    border-color: transparent;
+    outline: none;
   }
 
   .composer textarea:disabled {
     opacity: 0.5;
   }
 
-  .send {
-    width: 52px;
-    height: 52px;
-    min-height: 52px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border-radius: 12px;
+  .send:not(:disabled) {
+    color: var(--accent);
   }
 
   .send:disabled {
@@ -1441,15 +1468,9 @@
     cursor: default;
   }
 
-  @media (max-width: 1050px) {
-    .leave span {
-      display: none;
-    }
-  }
-
   @media (max-width: 560px) {
     .emoji-popover {
-      left: 12px;
+      right: 12px;
     }
   }
 </style>

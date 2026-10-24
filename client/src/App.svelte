@@ -7,7 +7,6 @@
   import SettingsModal from './components/SettingsModal.svelte';
   import Sidebar from './components/Sidebar.svelte';
   import ToastHost from './components/ToastHost.svelte';
-  import VoicePanel from './components/VoicePanel.svelte';
 
   let ready = $state(false);
 
@@ -39,9 +38,6 @@
     <Sidebar />
     <main class="workspace">
       <Chat />
-      {#if app.voiceStatus !== 'idle'}
-        <VoicePanel />
-      {/if}
     </main>
   </div>
 
