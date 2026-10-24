@@ -64,15 +64,20 @@ export const LIMITS = {
   messagesInMemory: 2000
 };
 
+function splitUrls(value) {
+  return value.split(',').map((url) => url.trim()).filter(Boolean);
+}
+
 export function getIceServers() {
-  const iceServers = [
-    { urls: 'stun:stun.l.google.com:19302' },
-    { urls: 'stun:stun1.l.google.com:19302' }
-  ];
+  // Google STUN is unreachable from some networks, so STUN_URL replaces it entirely.
+  const stunUrls = process.env.STUN_URL
+    ? splitUrls(process.env.STUN_URL)
+    : ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'];
+  const iceServers = stunUrls.map((urls) => ({ urls }));
 
   if (process.env.TURN_URL) {
     iceServers.push({
-      urls: process.env.TURN_URL.split(',').map((url) => url.trim()).filter(Boolean),
+      urls: splitUrls(process.env.TURN_URL),
       username: process.env.TURN_USERNAME || '',
       credential: process.env.TURN_PASSWORD || ''
     });
