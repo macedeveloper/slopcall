@@ -1,12 +1,9 @@
 This is the next steps for Slopcall. Read `prompt.md` and add new features to the app. (Ask what steps to do). If you have questions - ask them first. Do not read `prompt (MVP).txt` as it is outdated.
 
-I'll provide you 
-
 
 # Project
 Name: Slopcall
 Description: Mini Discord x TeamSpeak clone that just works.
-
 
 
 # TO-DO list
@@ -36,14 +33,15 @@ Description: Mini Discord x TeamSpeak clone that just works.
 ## From `merge.md` (23.10.2026)
 - [x] Paste images and files with Ctrl+V
 - [x] Fix image cropping (keep the original aspect ratio, do not cover-crop attachments)
-- [ ] Re-sort Contestmoji to match `macestudios.ru/contestmoji`
-- [ ] Replies to messages
 - [x] Big emojis when a message contains only emojis
 - [x] Group consecutive messages from the same user (one avatar and nickname)
 - [x] Clickable plain links (not only Markdown links)
 - [x] Show who reacted to a message
+- [ ] Re-sort Contestmoji to match `macestudios.ru/contestmoji`
+- [ ] Replies to messages
 - [ ] Auto-update the desktop app
 - [ ] Notifications
+- [ ] Noise canceling
 
 ## Fun tab
 - [x] `Dynamic Force` — italic with a top-to-bottom gradient `#ffff00` → `#ff7f00`
