@@ -1,0 +1,13 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50" cy="50" r="42" fill="#FFBA34"/>
+<path d="M23 37C31.2443 38.8274 35.5929 40.6161 43 45C34.591 47.1131 30.1481 48.7797 23 53" stroke="#471C13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M77 37C68.7557 38.8274 64.4071 40.6161 57 45C65.409 47.1131 69.8519 48.7797 77 53" stroke="#471C13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<mask id="mask0_623_45" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="43" y="56" width="13" height="16">
+<path d="M45.2238 57.496C47.2531 55.1147 54.5364 55.7833 55.4553 58.0467C57.7377 63.6692 52.3623 72 48.315 72C42.6178 72 41.361 62.0285 45.2238 57.496Z" fill="#FF74A7"/>
+</mask>
+<g mask="url(#mask0_623_45)">
+<rect x="24" y="50" width="50" height="29" fill="#FF74A7"/>
+<path opacity="0.5" d="M48.7724 55.4041C49.0594 54.3507 50.0389 53.7629 50.9604 54.0909C53.5324 55.0069 50.8339 67.4394 48.2561 66.988C45.4035 66.4885 48.2252 57.4139 48.7724 55.4041Z" fill="#38001E"/>
+</g>
+<path d="M39 61C42.5 54.3333 56.5 54.3333 60 61" stroke="#471C13" stroke-width="4" stroke-linecap="round"/>
+</svg>

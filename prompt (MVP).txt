@@ -1,0 +1,120 @@
+# Project
+
+Name: Slopcall
+
+Description: Mini Discord x TeamSpeak clone that just works.
+
+## MVP features (Minimum Viable Product):
+- Calls & Group calls, messages.
+- No pretty ui, no animations, just base app. (yet)
+- No account system. (yet)
+1. I can open the app, set a nickname, and join a text channel.
+2. I can send a message and other people in the channel see it within ~1s.
+3. I can join a voice room and hear others; others hear me.
+4. I can mute/unmute my mic and deafen/undeafen my audio via hotkeys.
+5. I can set a per-user playback volume for each person in the call.
+6. I can leave the voice room and the text channel without reloading.
+
+## Necessary features:
+- Hotkeys for: Microphone disabling, Audio on/off.
+- Volume settings for each user in call.
+- Calls & Group calls
+- Messages
+- Nickname choosing
+
+## Later features (do not build yet):
+- Encryption (secure secret messaging and calls)
+- Profile pictures
+- Markdown
+- File sending (256 MB cap, files above 32 MB gets deleted after 7 days, other files after 30 days.)
+- Screensharing
+
+## Criteria:
+- Project should be lightweight and easily runnable on slow devices (Client) and our ubuntu server (`server_characteristics.txt`)
+- User can only be in one call at a time.
+- Should support English and Russian languages. Changeable in settings, reads from system for defaults.
+- Should sit in tray like Discord. Add actions on RMB on tray icon.
+
+## Other data:
+- I will deploy on server through filezilla and ssh connection. (there is no script setted up)
+- Frontend framework is up to you. It should be able to satisfy design criteria, be lightweight, fast and unintrusive.
+
+# Hard constraints (target server)
+
+Source of truth: `server_characteristics.txt`. Key facts inline so they aren't missed:
+
+- OS: Ubuntu 26.04.1 LTS, x86_64.
+- CPU: 1 vCPU Intel Xeon E5-2699 v4.
+- RAM: 2 GB DDR4 (shared).
+- Disk: 30 GB NVMe (shared).
+- Network: up to 5 Gbit/s, L3–L4 DDoS protection.
+- Path on server: `/home/slopcall` (sftp://root@31.77.9.218/home/slopcall).
+- **Already running on this box:** AmneziaVPN + Telegram bots, managed via **pm2**.
+  - You MUST NOT disturb or restart existing pm2 processes.
+  - idk anything about ports on the server
+  - May you install system packages? yeah why not
+  - Docker not allowed
+
+# Design (client):
+- Use Apple's design principles. (search in web)
+- Minimalistic, easy to understand, functional.
+- Slight shadows for elevation.
+- Apple HIG + Material Design 3 as reference — but for MVP, "no pretty UI, no animations" applies first. Design tokens below are for structure; polish is post-MVP.
+- Concrete targets to follow (instead of "search the web"): 8px spacing grid, minimum 44x44px hit targets, one accent color, elevation via shadow not borders, visible focus states.
+- Rounded edges
+
+## Colors:
+| Role | Hex | Use |
+| --- | --- | --- |
+| Base (page background) | `#18181c` | App background |
+| Elevated (level 2) | `#26262a` | Panels, cards, sidebar |
+| High (level 3) | `#353539` | Inputs, hover states |
+| Top (level 4) | `#444449` | Modals, popovers, raised elements |
+| Special | `#77777c` | Borders, dividers, disabled state, selections |
+| Accent (orange) | `#ff7a15` | Primary actions, active state, focus ring |
+
+### Additional colors:
+#E52B3B (red, for errors etc.)
+#F7D023 (yellow)
+#30D557 (green, for online / speaking indicator / success)
+#178cf2 (blue. for info, links or stuff)
+#7a15ff (purple)
+#EA508E (pink)
+
+## Font:
+
+### Main font:
+Name: Geist (provided in project folder)
+Line height: Auto
+Letter spacing: -5%
+Heading (48px)
+Subheading (30px)
+Regular text (18px)
+
+### Code font (if needed):
+Name: `Monaspace Neon Var` (provided in project folder)
+Size: 16px
+
+## Buttons:
+Font size: 18px
+Padding: 20h 8v
+Font weight: 600 (bold)
+- Icons: use bootstrap-icons as a vendored subset, not the full set. Do not inline the entire icon library.
+
+## Animations
+- Minimal, short (100–200ms), ease-in-out, snappy.
+- Apple's animation principles.
+- For MVP: minimal only; do not spend time here.
+
+# Open questions to answer before implementation
+- Voice architecture and max room size? I don't think there would be more than 8 people in the room at once, but let's cap at 12 just in cape.
+- How many concurrent users overall should the server survive? 32 ig
+- Should messages persist across restarts? yeah
+- Should the agent deploy to the server, or only produce a runnable repo? agent should tell me how to set this up on server. pick implementation that is easy to set up.
+
+# Voice transport:
+P2P mesh (WebRTC, no media server) — simplest, cheapest, but CPU/bandwidth grow with `n^2` and it degrades past ~4–6 users.
+
+---
+
+Read `prompt.txt` and build an MVP. If you have questions - ask them first.

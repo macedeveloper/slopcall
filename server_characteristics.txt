@@ -1,0 +1,20 @@
+OS: Ubuntu 26.04.1 LTS (GNU/Linux 7.0.0-38-generic x86_64)
+
+Working directory for this project: sftp://root@31.77.9.218/home/slopcall
+
+Процессор
+1 vCPU Intel Xeon E5-2699 v4
+
+Оперативная память
+2 GB DDR4
+
+Хранилище
+30 GB NVMe SSD
+
+Скорость сети
+До 5 Gbit/s
+
+Защита от DDoS
+Мощная защита от атак L3-L4
+
+На сервере также хостится AmneziaVPN и телеграм боты через pm2. Новый проект не должен мешать существующим.

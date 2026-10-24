@@ -1,0 +1,12 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50" cy="50" r="42" fill="#FFBA34"/>
+<path d="M68 63L74 57" stroke="#FF664D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16 63L22 57" stroke="#FF664D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M78 63L84 57" stroke="#FF664D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26 63L32 57" stroke="#FF664D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68 64.2491C63.3043 79.9582 36.6957 79.9582 32 64C32 64 42.6523 65.9574 50 66C57.3154 66.0424 68 64.2491 68 64.2491Z" fill="#E00043" stroke="#E00043" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M58.2923 25.9855C63.3043 23.6542 68.4536 26.274 70.7175 30.8932C74.9877 28.0248 80.6545 28.3418 83.9094 32.8496C87.1642 37.3574 86.1247 43.2609 81.8237 46.4541C78.2477 49.109 67.2002 54.624 63.9325 56.2149C61.8982 53.2033 55.0658 42.8974 53.2964 38.8102C51.1682 33.8943 53.2803 28.3169 58.2923 25.9855Z" fill="#F20D44"/>
+<path d="M41.7077 25.9855C36.6957 23.6542 31.5464 26.274 29.2825 30.8932C25.0123 28.0248 19.3455 28.3418 16.0906 32.8496C12.8358 37.3574 13.8753 43.2609 18.1763 46.4541C21.7523 49.109 32.7998 54.624 36.0675 56.2149C38.1018 53.2033 44.9342 42.8974 46.7036 38.8102C48.8318 33.8943 46.7197 28.3169 41.7077 25.9855Z" fill="#F20D44"/>
+<ellipse cx="19.9821" cy="36.299" rx="2.59808" ry="3.4641" transform="rotate(30 19.9821 36.299)" fill="white"/>
+<ellipse cx="58.9821" cy="32.299" rx="2.59808" ry="3.4641" transform="rotate(30 58.9821 32.299)" fill="white"/>
+</svg>

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Client build output
+client/dist/
+client/.vite/
+
+# Tauri build output and generated files
+client/src-tauri/target/
+client/src-tauri/gen/
+
+# Runtime data and logs
+server/data/
+server/.data*/
+*.log
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+client/test-results/
+client/playwright-report/
